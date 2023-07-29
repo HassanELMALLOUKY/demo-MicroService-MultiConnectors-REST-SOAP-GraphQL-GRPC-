@@ -1,0 +1,17 @@
+type Query {
+    allCustomers:[CustomerResponse],
+    getCustomerById(id:Int):CustomerResponse
+}
+
+type Mutation{
+    saveCustomer(customer:CustomerRequest):CustomerResponse
+}
+type CustomerResponse{
+    id: Int,
+    name: String,
+    email: String
+}
+input CustomerRequest{
+    name: String,
+    email: String
+}
