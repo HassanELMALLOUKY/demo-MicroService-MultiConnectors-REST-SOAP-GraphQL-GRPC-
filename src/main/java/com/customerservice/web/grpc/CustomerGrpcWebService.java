@@ -5,6 +5,7 @@ import com.customerservice.mapper.CustomerMapper;
 import com.customerservice.repository.CustomerRepository;
 import com.customerservice.stub.CustomerServiceGrpc;
 import com.customerservice.stub.CustomerServiceOuterClass;
+import com.google.protobuf.Empty;
 import io.grpc.stub.StreamObserver;
 import lombok.AllArgsConstructor;
 import net.devh.boot.grpc.server.service.GrpcService;
@@ -59,6 +60,10 @@ public class CustomerGrpcWebService extends CustomerServiceGrpc.CustomerServiceI
     @Override
     public void deleteCustomer(CustomerServiceOuterClass.deleteCustomerRequest request, StreamObserver<CustomerServiceOuterClass.deleteCustomerResponse> responseObserver) {
         customerRepository.deleteById(request.getId());
-        super.deleteCustomer(request, responseObserver);
+        CustomerServiceOuterClass.deleteCustomerResponse customerResponse=
+                CustomerServiceOuterClass.deleteCustomerResponse.newBuilder()
+                        .getDefaultInstanceForType();
+        responseObserver.onNext(customerResponse);
+        responseObserver.onCompleted();
     }
 }

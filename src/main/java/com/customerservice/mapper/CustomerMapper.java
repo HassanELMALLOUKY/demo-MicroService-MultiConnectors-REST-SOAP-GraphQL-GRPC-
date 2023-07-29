@@ -3,28 +3,25 @@ package com.customerservice.mapper;
 import com.customerservice.dto.CustomerRequest;
 import com.customerservice.entity.Customer;
 import com.customerservice.stub.CustomerServiceOuterClass;
+import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
 
 @Component
 public class CustomerMapper {
+    private ModelMapper modelMapper=new ModelMapper();
 
     public Customer toCustomer(CustomerRequest customerRequest){
-        Customer customer=new Customer();
-        BeanUtils.copyProperties(customerRequest,customer);
-        return customer;
+        return modelMapper.map(customerRequest,Customer.class);
     }
 
     public CustomerServiceOuterClass.Customer fromCustomerToGrpcCustomer(Customer customer){
-        CustomerServiceOuterClass.Customer customer1= CustomerServiceOuterClass.Customer.newBuilder().build();
-        BeanUtils.copyProperties(customer,customer1);
-        return customer1;
+        return modelMapper.map(customer, CustomerServiceOuterClass.Customer.Builder.class).build();
     }
 
     public Customer fromCustomerRequestToCustomer(CustomerServiceOuterClass.CustomerRequest customerRequest){
-        Customer customer1=new Customer();
-        BeanUtils.copyProperties(customerRequest,customer1);
-        return customer1;
+        return modelMapper.map(customerRequest,Customer.class);
     }
 }
